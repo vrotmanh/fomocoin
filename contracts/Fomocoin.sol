@@ -19,11 +19,8 @@ contract Fomocoin is ERC20 {
 
   uint initialPrice = 10000000000000; //(in wei)
   mapping(address => uint) balances;
-  mapping (address => mapping (address => uint)) allowed;
 
   function deposit() public payable {
-    assert(totalSupply + tokens_to_credit >= totalSupply);
-
     uint wei_deposited = msg.value;
     uint buy_price = initialPrice*(totalSupply+1);
     uint money_left = wei_deposited;
@@ -63,6 +60,18 @@ contract Fomocoin is ERC20 {
     return true;
   }
 
+  function buyingPrice() public view returns (uint price) {
+    return initialPrice*(totalSupply+1);
+  }
+
+  function sellingPrice() public view returns (uint price) {
+    return initialPrice*totalSupply;
+  }
+
+  function balanceOf(address _owner) public view returns (uint balance) {
+    return balances[_owner];
+  }
+
   function transfer(address _to, uint _value) public returns (bool success){
     revert();
   }
@@ -71,17 +80,11 @@ contract Fomocoin is ERC20 {
     revert();
   }
 
-  function balanceOf(address _owner) public view returns (uint balance) {
-    return balances[_owner];
-  }
-
   function approve(address _spender, uint _value) public returns (bool success) {
-    allowed[msg.sender][_spender] = _value;
-    emit Approval(msg.sender, _spender, _value);
-    return true;
+    revert();
   }
 
   function allowance(address _owner, address _spender) public view returns (uint remaining) {
-    return allowed[_owner][_spender];
+    revert();
   }
 }
